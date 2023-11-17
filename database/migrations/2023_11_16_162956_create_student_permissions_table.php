@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('student_permissions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('student_id')->constrained();
+            $table->foreignId('teacher_id')->constrained();
+            $table->string('permission_type');
+            $table->date('permission_date');
             $table->timestamps();
         });
     }

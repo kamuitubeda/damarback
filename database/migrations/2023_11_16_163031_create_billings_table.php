@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('billings', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('student_id')->constrained();
+            $table->foreignId('payment_id')->constrained();
+            $table->foreignId('discount_id')->nullable()->constrained();
+            $table->decimal('amount', 8, 2);
+            $table->date('due_date');
+            $table->string('payment_status');
             $table->timestamps();
         });
     }

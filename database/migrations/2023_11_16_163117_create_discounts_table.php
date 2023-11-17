@@ -13,6 +13,12 @@ return new class extends Migration
     {
         Schema::create('discounts', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('student_id')->constrained();
+            $table->foreignId('year_id')->constrained('school_years');
+            $table->string('discount_type');
+            $table->decimal('percentage', 5, 2);
+            $table->date('start_date');
+            $table->date('end_date')->nullable();
             $table->timestamps();
         });
     }

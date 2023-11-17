@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('book_closings', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('year_id')->constrained('school_years');
+            $table->date('closing_date');
             $table->timestamps();
         });
     }
