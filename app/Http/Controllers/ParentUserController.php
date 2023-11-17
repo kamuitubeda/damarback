@@ -38,4 +38,12 @@ class ParentUserController extends Controller
         $parentUser->delete();
         return response()->json(null, 204);
     }
+
+    public function listChildren(Request $request)
+    {
+        $parentUser = auth()->user();
+        $children = $parentUser->children;
+
+        return response()->json(['children' => $children]);
+    }
 }
