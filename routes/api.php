@@ -36,7 +36,7 @@ Route::resource('recurring-billings', RecurringBillingController::class);
 Route::resource('school-years', SchoolYearController::class);
 Route::resource('student-attendances', StudentAttendanceController::class);
 Route::resource('student-classes', StudentClassController::class);
-Route::resource('students', StudentController::class);
+Route::apiResource('students', StudentController::class);
 Route::resource('student-permissions', StudentPermissionController::class);
 Route::resource('teachers', TeacherController::class);
 

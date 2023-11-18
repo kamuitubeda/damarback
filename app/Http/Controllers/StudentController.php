@@ -3,28 +3,44 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Student;
-use App\Models\Billing;
-use App\Models\StudentClass;
+use App\Models\Models\Student;
+use App\Models\Models\Billing;
+use App\Models\Models\StudentClass;
+use App\Http\Resources\StudentResource;
+use App\Http\Controllers\BaseController as BaseController;
 
-class StudentController extends Controller
+class StudentController extends BaseController
 {
     public function index()
     {
         $students = Student::all();
-        return response()->json(['students' => $students]);
+        return $this->sendResponse(StudentResource::collection($students), 'Students retrieved successfully.');
     }
 
     public function show($id)
     {
         $student = Student::findOrFail($id);
-        return response()->json(['student' => $student]);
+
+        if (is_null($student)) {
+            return $this->sendError('Student not found.');
+        }
+
+        return $this->sendResponse(new StudentResource($student), 'Student retrieved successfully.');
     }
 
     public function store(Request $request)
     {
+        $validator = Validator::make($input, [
+            'name' => 'required'
+        ]);
+   
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());       
+        }
+
         $student = Student::create($request->all());
-        return response()->json(['student' => $student], 201);
+
+        return $this->sendResponse(new  StudentResource($student), 'Student created successfully.');
     }
 
     public function update(Request $request, $id)
