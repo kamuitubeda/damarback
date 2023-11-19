@@ -4,39 +4,65 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\StudentPermission;
+use App\Http\Resources\StudentPermissionResource;
+use App\Http\Controllers\BaseController as BaseController;
 
 class StudentPermissionController extends Controller
 {
     public function index()
     {
         $studentPermissions = StudentPermission::all();
-        return response()->json(['studentPermissions' => $studentPermissions]);
+        return $this->sendResponse(StudentPermissionResource::collection($studentPermissions), 'StudentPermissions retrieved successfully.');
     }
 
     public function show($id)
     {
         $studentPermission = StudentPermission::findOrFail($id);
-        return response()->json(['studentPermission' => $studentPermission]);
+
+        if (is_null($studentPermission)) {
+            return $this->sendError('Student permission not found.');
+        }
+
+        return $this->sendResponse(new StudentPermissionResource($studentPermission), 'Student permission retrieved successfully.');
     }
 
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required'
+        ]);
+   
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());       
+        }
+
         $studentPermission = StudentPermission::create($request->all());
-        return response()->json(['studentPermission' => $studentPermission], 201);
+
+        return $this->sendResponse(new  StudentPermissionResource($studentPermission), 'Student permission created successfully.');
     }
 
     public function update(Request $request, $id)
     {
         $studentPermission = StudentPermission::findOrFail($id);
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required'
+        ]);
+   
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());       
+        }
+
         $studentPermission->update($request->all());
-        return response()->json(['studentPermission' => $studentPermission]);
+   
+        return $this->sendResponse(new StudentPermissionResource($studentPermission), 'Student permission updated successfully.');
     }
 
     public function destroy($id)
     {
         $studentPermission = StudentPermission::findOrFail($id);
         $studentPermission->delete();
-        return response()->json(null, 204);
+        return $this->sendResponse([], 'Student permission deleted successfully.');
     }
 
     public function requestPermission(Request $request, $studentId)
@@ -54,6 +80,6 @@ class StudentPermissionController extends Controller
             // Add other fields as needed
         ]);
 
-        return response()->json(['message' => 'Permission requested successfully.']);
+        return $this->sendResponse([], 'Permission requested successfully.');
     }
 }

@@ -14,6 +14,12 @@ class SchoolYearResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'start_date' => $this->start_date,
+            'end_date' => $this->end_date,
+            'is_current_year' => $this->is_current_year,
+            // Add other attributes as needed
+        ];
     }
 }

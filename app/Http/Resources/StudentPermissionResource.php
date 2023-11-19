@@ -14,6 +14,13 @@ class StudentPermissionResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'student_id' => $this->student_id,
+            'teacher_id' => $this->teacher_id,
+            'permission_type' => $this->permission_type,
+            'permission_date' => $this->permission_date,
+            // Add other attributes as needed
+        ];
     }
 }

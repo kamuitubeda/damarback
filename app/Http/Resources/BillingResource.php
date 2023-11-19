@@ -14,6 +14,15 @@ class BillingResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'student_id' => $this->student_id,
+            'payment_id' => $this->payment_id,
+            'discount_id' => $this->discount_id,
+            'amount' => $this->amount,
+            'due_date' => $this->due_date,
+            'payment_status' => $this->payment_status,
+            // Add other attributes as needed
+        ];
     }
 }

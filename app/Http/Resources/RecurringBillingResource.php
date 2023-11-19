@@ -14,6 +14,13 @@ class RecurringBillingResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'student_id' => $this->student_id,
+            'billing_id' => $this->billing_id,
+            'frequency' => $this->frequency,
+            'next_billing_date' => $this->next_billing_date,
+            // Add other attributes as needed
+        ];
     }
 }

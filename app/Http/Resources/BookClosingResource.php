@@ -14,6 +14,11 @@ class BookClosingResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'year_id' => $this->year_id,
+            'closing_date' => $this->closing_date,
+            // Add other attributes as needed
+        ];
     }
 }
