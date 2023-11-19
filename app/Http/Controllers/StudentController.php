@@ -46,15 +46,25 @@ class StudentController extends BaseController
     public function update(Request $request, $id)
     {
         $student = Student::findOrFail($id);
+
+        $validator = Validator::make($request->all(), [
+            'name' => 'required'
+        ]);
+   
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());       
+        }
+
         $student->update($request->all());
-        return response()->json(['student' => $student]);
+   
+        return $this->sendResponse(new StudentResource($student), 'Student updated successfully.');
     }
 
     public function destroy($id)
     {
         $student = Student::findOrFail($id);
         $student->delete();
-        return response()->json(null, 204);
+        return $this->sendResponse([], 'Student deleted successfully.');
     }
 
     //extended function
