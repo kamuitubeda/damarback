@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\API\BaseController as BaseController;
+use App\Http\Controllers\BaseController as BaseController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Validator;
@@ -54,5 +54,12 @@ class AuthController extends BaseController
         else{ 
             return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
         } 
+    }
+
+    public function logout(Request $request)
+    {
+        $success = $request->user()->token()->revoke();
+
+        return $this->sendResponse($success, 'Successfully logged out.');
     }
 }

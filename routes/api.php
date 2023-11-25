@@ -12,8 +12,10 @@ use App\Http\Controllers\SchoolYearController;
 use App\Http\Controllers\StudentAttendanceController;
 use App\Http\Controllers\StudentClassController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\StudentPermissionController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\AuthController;
 
 
 /*
@@ -36,6 +38,7 @@ Route::resource('recurring-billings', RecurringBillingController::class);
 Route::resource('school-years', SchoolYearController::class);
 Route::resource('student-attendances', StudentAttendanceController::class);
 Route::resource('student-classes', StudentClassController::class);
+Route::apiResource('classrooms', ClassroomController::class);
 Route::apiResource('students', StudentController::class);
 Route::resource('student-permissions', StudentPermissionController::class);
 Route::resource('teachers', TeacherController::class);
@@ -57,6 +60,16 @@ Route::get('payments/specific-day', [PaymentController::class, 'listPaymentsForS
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+
+// Registration
+Route::post('register', [AuthController::class, 'register']);
+
+// Login
+Route::post('login', [AuthController::class, 'login']);
+
+// Logout (protected by auth:api middleware)
+Route::middleware('auth:api')->post('logout', [AuthController::class, 'logout']);
 
 Route::middleware(['auth', 'parent'])->group(function () {
     // Routes for parent users
