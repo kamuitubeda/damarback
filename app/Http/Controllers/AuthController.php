@@ -56,6 +56,20 @@ class AuthController extends BaseController
         } 
     }
 
+    public function me(Request $request)
+    {
+        $user = Auth::user();
+
+        if($user) {
+            $success['token'] =  $user->createToken('MyApp')-> accessToken; 
+            $success['name'] =  $user->name;
+   
+            return $this->sendResponse($success, 'User login successfully.');
+        } else{ 
+            return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
+        } 
+    }
+
     public function logout(Request $request)
     {
         $success = $request->user()->token()->revoke();

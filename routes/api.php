@@ -38,8 +38,6 @@ Route::resource('recurring-billings', RecurringBillingController::class);
 Route::resource('school-years', SchoolYearController::class);
 Route::resource('student-attendances', StudentAttendanceController::class);
 Route::resource('student-classes', StudentClassController::class);
-Route::apiResource('classrooms', ClassroomController::class);
-Route::apiResource('students', StudentController::class);
 Route::resource('student-permissions', StudentPermissionController::class);
 Route::resource('teachers', TeacherController::class);
 
@@ -69,7 +67,19 @@ Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
 
 // Logout (protected by auth:api middleware)
-Route::middleware('auth:api')->post('logout', [AuthController::class, 'logout']);
+Route::middleware('auth:api')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/me', [AuthController::class, 'me']);
+
+    Route::apiResource('classrooms', ClassroomController::class);
+    Route::apiResource('students', StudentController::class);
+
+    Route::get('/users', [UserController::class, 'index']);
+    Route::get('/users/{id}', [UserController::class, 'show']);
+    Route::post('/users', [UserController::class, 'store']);
+    Route::put('/users/{id}', [UserController::class, 'update']);
+    Route::delete('/users/{id}', [UserController::class, 'destroy']);
+});
 
 Route::middleware(['auth', 'parent'])->group(function () {
     // Routes for parent users
