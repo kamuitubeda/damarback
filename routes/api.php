@@ -45,7 +45,6 @@ Route::get('parent/children', [ParentUserController::class, 'listChildren']);
 Route::get('payments/today', [PaymentController::class, 'listPaymentsForToday']);
 Route::post('recurring-billings/add', [RecurringBillingController::class, 'addRecurringBilling']);
 Route::get('students/{studentId}/attendance', [StudentAttendanceController::class, 'listStudentAttendance']);
-Route::get('class/{classId}/students', [StudentController::class, 'listStudentsInClass']);
 Route::put('students/{studentId}/change-class', [StudentClassController::class, 'changeStudentClass']);
 Route::get('students/no-unpaid-bills', [StudentController::class, 'listStudentsWithNoUnpaidBills']);
 Route::post('students/{studentId}/request-permission', [StudentPermissionController::class, 'requestPermission']);
@@ -73,6 +72,10 @@ Route::middleware('auth:api')->group(function () {
 
     Route::apiResource('classrooms', ClassroomController::class);
     Route::apiResource('students', StudentController::class);
+
+    //get all student in specific class
+    Route::get('class/{classId}/students', [StudentController::class, 'listStudentsInClass']);
+    Route::get('class/students', [ClassroomController::class, 'getClassroomsWithStudents']);
 
     Route::get('/users', [UserController::class, 'index']);
     Route::get('/users/{id}', [UserController::class, 'show']);

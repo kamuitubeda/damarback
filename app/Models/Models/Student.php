@@ -32,6 +32,11 @@ class Student extends Model
         return $this->hasMany(StudentClass::class);
     }
 
+    public function classrooms()
+    {
+        return $this->belongsToMany(Classroom::class, 'student_classes');
+    }
+
     public function parentUser()
     {
         return $this->belongsTo(ParentUser::class);

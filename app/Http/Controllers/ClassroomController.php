@@ -64,4 +64,15 @@ class ClassroomController extends BaseController
         $classroom->delete();
         return $this->sendResponse([], 'Classroom deleted successfully.');
     }
+
+    public function getClassroomsWithStudents()
+    {
+        $classrooms = Classroom::with('students')->get();
+
+        $result = collect([
+            'classrooms' => $classrooms
+        ]);
+
+        return $this->sendResponse($result, 'Classrooms with its students retrieved successfully.');
+    }
 }

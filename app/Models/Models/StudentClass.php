@@ -19,4 +19,8 @@ class StudentClass extends Model
     public function schoolYear() {
         return $this->belongsTo(SchoolYear::class);
     }
+
+    public function schoolYear() {
+        return $this->belongsTo(Classroom::class);
+    }
 }
